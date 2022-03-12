@@ -226,10 +226,11 @@ if ($current_page != $menu_root) { ?>
 <br><br><?php
 
 // display images
-displayFolderList($folders,$server_root,$http_base,$current_dir);
-
-?>
+displayFolderList($folders,$server_root,$http_base,$current_dir); ?>
 
 </div> <!--- class="my_text" -->
 </body>
-</html>
+</html> <?php
+
+?>
+
