@@ -136,7 +136,7 @@ body
 {
     font-family:    "Myriad Pro","Helvetica Neue",Helvetica,Arial,Sans-Serif;
     font-size:      12px;
-    font-weight:    bold;
+    //font-weight:   bold;
 }
 a:link, a:visited {
     font-size: 12px;
@@ -170,7 +170,8 @@ if ( isset( $_SERVER["HTTPS"] ) && strtolower( $_SERVER["HTTPS"] ) == "on" )
 else
     $protocol = "http://";
 $http_base = $protocol . $_SERVER['HTTP_HOST'];
-$current_page = $http_base . $_SERVER['REQUEST_URI'];    
+$current_page = $http_base . $_SERVER['REQUEST_URI'];
+$server_root = $_SERVER['DOCUMENT_ROOT'];   
   
 // store our first menu page
 if (!isset($_SESSION['foose_menu_root'])) {
@@ -182,14 +183,6 @@ else
 
 // !!!!! debugging !!!!!
 // unset($_SESSION['foose_menu_root']);
-
-// get base host server url
-if (isset($_SERVER["HTTPS"]) && strtolower($_SERVER["HTTPS"]) == "on")
-    $protocol = "https://";
-else
-    $protocol = "http://";
-$http_base = $protocol . $_SERVER['HTTP_HOST'];
-$server_root = $_SERVER['DOCUMENT_ROOT'];
 
 // get current directory
 $current_dir = getcwd();
@@ -212,25 +205,24 @@ $folders = getFolderList($hard_dir);
 usort($folders, function($a, $b){ return(basename($a['folder']) > basename($b['folder'])); });
 
 // intro
-echo "<br><br>";
+echo "<br>";
 echo "<font style='color:yellow'><div style='font-size:18'>Select one of the following folders</div></font>";
 
 // no need to go back if not refered
 if (getenv('HTTP_REFERER') != $menu_root) { ?>
-    <a style=font-size:14px; href="<?php echo getenv('HTTP_REFERER');?>">&nbsp;<b>Previous Page</b></a>&nbsp;&nbsp;&nbsp; <?php
+    <a style=font-size:12px; href="<?php echo getenv('HTTP_REFERER');?>">&nbsp;<b>[Go Back]</b></a>&nbsp;&nbsp;&nbsp; <?php
 }
 if ($current_page != $menu_root) { ?>
-    <a style=font-size:14px; href="<?php echo $menu_root; ?>">&nbsp;<b>Start Over</b></a> <?php
+    <a style=font-size:12px; href="<?php echo $menu_root; ?>"><b>[Menu]</b></a> <?php
 } ?>
  
 <br><br><?php
 
 // display images
-displayFolderList($folders,$server_root,$http_base,$current_dir); ?>
-
-</div> <!--- class="my_text" -->
-</body>
-</html> <?php
+displayFolderList($folders,$server_root,$http_base,$current_dir);
 
 ?>
 
+</div> <!--- class="my_text" -->
+</body>
+</html>
