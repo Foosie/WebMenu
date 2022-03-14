@@ -1,7 +1,7 @@
 <?php
 
 /*
- * menu2.php
+ * menu3.php
  *
  * Copyright (c) 2021 Don Mankin (Foose, Fooser, Foosie)
  *
@@ -57,28 +57,36 @@ function getFolderList($dir)
 }
 
 // some funny business here to attempt to support directory alias'
+function normalizeURL($fld,$current_dir,$current_page) { 
+    if (!empty($fld['folder'])) {
+        $url = str_replace("%20"," ",$current_page);
+        $dir = $current_dir;
+        $endofurl = basename($url);
+        $endofdir = basename($dir);       
+        $folder = "";          
+        while ($endofurl == $endofdir) {
+            $folder = $endofurl . "/" . $folder;
+            $url = str_replace($endofurl,"",$url);
+            $dir = str_replace($endofurl,"",$dir);
+            $endofurl = basename($url);
+            $endofdir = basename($dir);
+            if (substr($url, -1) == "/") 
+                $url = substr($url, 0, -1);
+            if (substr($dir, -1) == "/")
+                $dir = substr($dir, 0, -1); 
+        }                                
+        $url .= $folder . basename($fld['folder']) . "/";             
+        return $url;
+    }
+    return $current_page;
+}
+
 function displayFolderList($folders,$current_dir,$current_page) { 
     echo "<div id='images'>";
     echo "<ul>";
     foreach($folders as $fld) {
         if (!empty($fld['folder'])) {
-            $url = str_replace("%20"," ",$current_page);
-            $dir = $current_dir;
-            $endofurl = basename($url);
-            $endofdir = basename($dir);       
-            $folder = "";          
-            while ($endofurl == $endofdir) {
-                $folder = $endofurl . "/" . $folder;
-                $url = str_replace($endofurl,"",$url);
-                $dir = str_replace($endofurl,"",$dir);
-                $endofurl = basename($url);
-                $endofdir = basename($dir);
-                if (substr($url, -1) == "/")
-                    $url = substr($url, 0, -1);
-                if (substr($dir, -1) == "/")
-                    $dir = substr($dir, 0, -1); 
-            }                                
-            $url .= $folder . basename($fld['folder']) . "/";             
+            $url = normalizeURL($fld,$current_dir,$current_page); 
             echo "<li class=\"projbox\">"; ?>
             <a href="<?php echo $url;?>">&nbsp;<b><?php echo basename($fld['folder']);?></b></a> <?php
             echo "</li>";
