@@ -1,7 +1,7 @@
 <?php
 
 /*
- * menu.php
+ * menu2.php
  *
  * Copyright (c) 2021 Don Mankin (Foose, Fooser, Foosie)
  *
@@ -56,13 +56,29 @@ function getFolderList($dir)
     return $retval;
 }
 
-function displayFolderList($folders,$server_root,$http_base,$current_dir) { 
+// some funny business here to attempt to support directory alias'
+function displayFolderList($folders,$current_dir,$current_page) { 
     echo "<div id='images'>";
     echo "<ul>";
     foreach($folders as $fld) {
         if (!empty($fld['folder'])) {
-            // get folder tree by removing $server_root from $current_dir
-            $url = $http_base . str_replace($server_root, "",$current_dir) . "/" . basename($fld['folder']) . "/";
+            $url = str_replace("%20"," ",$current_page);
+            $dir = $current_dir;
+            $endofurl = basename($url);
+            $endofdir = basename($dir);       
+            $folder = "";          
+            while ($endofurl == $endofdir) {
+                $folder = $endofurl . "/" . $folder;
+                $url = str_replace($endofurl,"",$url);
+                $dir = str_replace($endofurl,"",$dir);
+                $endofurl = basename($url);
+                $endofdir = basename($dir);
+                if (substr($url, -1) == "/")
+                    $url = substr($url, 0, -1);
+                if (substr($dir, -1) == "/")
+                    $dir = substr($dir, 0, -1); 
+            }                                
+            $url .= $folder . basename($fld['folder']) . "/";             
             echo "<li class=\"projbox\">"; ?>
             <a href="<?php echo $url;?>">&nbsp;<b><?php echo basename($fld['folder']);?></b></a> <?php
             echo "</li>";
@@ -219,7 +235,7 @@ if ($current_page != $menu_root) { ?>
 <br><br><?php
 
 // display images
-displayFolderList($folders,$server_root,$http_base,$current_dir);
+displayFolderList($folders,$current_dir,$current_page);
 
 ?>
 
