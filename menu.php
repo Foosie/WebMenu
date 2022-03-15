@@ -1,7 +1,7 @@
 <?php
 
 /*
- * menu3.php
+ * menu4.php
  *
  * Copyright (c) 2021 Don Mankin (Foose, Fooser, Foosie)
  *
@@ -154,7 +154,7 @@ body
     width:100%;
     font-family: "Myriad Pro","Helvetica Neue",Helvetica,Arial,Sans-Serif;
     color:#ffffff;
-    background-color:#8A4B08;
+    background-color:#645248;
 }
 .my_text
 {
@@ -162,15 +162,17 @@ body
     font-size:      12px;
     //font-weight:   bold;
 }
+
 a:link, a:visited {
     font-size: 12px;
-    background-color: #8A4B08;
+    background-color: #645248;
     color: white;
     text-decoration: none;
 }
-a:hover, a:active {
+    a:hover, a:active {
     font-size: 12px;
-    background-color: #8A4B08;
+    background-color: #645248;
+    color: white;
     text-decoration: none;
 } 
     
